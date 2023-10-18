@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+    template-service:
+        build:
+            context: ..
+            dockerfile: docker/Dockerfile.dev
+        command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8010
+        volumes:
+            - ../:/usr/src/app/
+        ports:
+            - 8001:8010
+            # - 9999:9999
+        env_file:
+            - ../.env
+        networks:
+            - template-network
+
+networks:
+    template-network:
+        external: True
