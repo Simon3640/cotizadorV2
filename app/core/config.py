@@ -3,6 +3,8 @@ from typing import Any, Dict, List
 
 from pydantic import BaseSettings
 
+# from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     """
@@ -10,7 +12,7 @@ class Settings(BaseSettings):
     """
 
     #: The application name
-    APP_NAME: str = "Template Api"
+    APP_NAME: str = "Digishop cotizador database Api"
     #: The application version
     APP_VERSION: str = "0.0.1"
     #: The application debug mode
@@ -18,6 +20,13 @@ class Settings(BaseSettings):
     #: The application api version
     API_V1_STR: str = "/api/v1"
 
+    DATABASE_URL: str
+
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080
+
+    SECRET_KEY: str
+
+    ALGORITHM: str = "HS256"
 
 
 @lru_cache()

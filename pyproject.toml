@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fast-api-template"
+name = "digishop-database"
 version = "0.1.0"
 description = ""
 authors = ["Simón <simon.garcial@udea.edu.co>"]
@@ -11,6 +11,11 @@ python = "^3.10"
 fastapi = "^0.92.0"
 gunicorn = "^20.1.0"
 pydantic = {extras = ["dotenv", "email"], version = "^1.10.5"}
+sqlalchemy = "^2.0.22"
+psycopg2-binary = "^2.9.9"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+python-multipart = "^0.0.6"
 
 
 [tool.poetry.group.dev.dependencies]
