@@ -23,6 +23,7 @@ uvicorn = "^0.20.0"
 autopep8 = "^2.0.1"
 black = "^23.1.0"
 flake8 = "^6.0.0"
+debugpy = "^1.8.0"
 
 
 [tool.poetry.group.test.dependencies]

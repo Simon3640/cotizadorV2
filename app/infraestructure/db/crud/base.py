@@ -49,11 +49,13 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                 raise ORMError(str(e))
 
     def update(self, *, id: int, obj_in: UpdateSchemaType) -> ModelType:
-        obj_data = obj_in.dict()
+        obj_data = obj_in.dict(
+            exclude_none=True, exclude_unset=True, exclude_defaults=True
+        )
         with SessionLocal() as db:
             try:
                 db_obj = db.query(self.model).filter(self.model.id == id).first()
-                for field in dict(db_obj):
+                for field in db_obj.as_dict():
                     if field in obj_data:
                         setattr(db_obj, field, obj_data[field])
                 db.add(db_obj)

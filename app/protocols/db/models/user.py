@@ -5,7 +5,7 @@ class User(BaseModel):
     email: str
     names: str | None
     last_names: str | None
-    address: str | None
+    identification: str | None
     age: int | None
     hashed_password: str
     is_superuser: bool | None

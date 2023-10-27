@@ -28,6 +28,11 @@ class Settings(BaseSettings):
 
     ALGORITHM: str = "HS256"
 
+    SUPER_USER_EMAIL: str = "admin@example.com"
+    SUPER_USER_PASSWORD: str = "12345678"
+
+
+
 
 @lru_cache()
 def get_settings() -> BaseSettings:

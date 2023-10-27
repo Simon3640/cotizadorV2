@@ -5,12 +5,14 @@ from starlette.middleware.cors import CORSMiddleware
 from app.api.router import api_router
 from app.core.config import settings
 from app.core import exceptions
+from app.core.debugger import initialize_fastapi_server_debugger_if_needed
 from app.infraestructure.db.config import init_db
 from app.infraestructure.security.config import init_security
 
 
 def create_app() -> FastAPI:
     """Create the application."""
+    initialize_fastapi_server_debugger_if_needed()
     app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
     app.add_middleware(
         CORSMiddleware,
@@ -29,8 +31,8 @@ app = create_app()
 @app.on_event("startup")
 def startup_event():
     """Event start up"""
-    init_db()
     init_security()
+    init_db()
 
 
 @app.exception_handler(exceptions.ORMError)
