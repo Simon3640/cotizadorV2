@@ -1,7 +1,7 @@
 from sqlalchemy import event
 
 from app.infraestructure.db.utils.model import BaseModel
-from app.infraestructure.db.models import User
+from app.infraestructure.db.models import User, Consecutive
 from app.infraestructure.db.utils import session
 from app.core.logging import get_logger
 from app.core.config import settings
@@ -34,6 +34,16 @@ def init_db() -> None:
                 settings.SUPER_USER_PASSWORD
             ),
             "is_superuser": True,
+            "identification": "123456789",
+            "names": "admin"
+        }
+        conn.execute(table.insert().values(**db_obj))
+        log.info(f"Usuarios iniciales creados")
+    
+    @event.listens_for(Consecutive.__table__, "after_create")
+    def create_admin_user(table, conn, *args, **kwargs):
+        db_obj = {
+            "consecutive": 1000
         }
         conn.execute(table.insert().values(**db_obj))
         log.info(f"Usuarios iniciales creados")

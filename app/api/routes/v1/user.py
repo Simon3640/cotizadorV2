@@ -1,9 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends
 
-from app.schemas.user import UserCreate, UserUpdate, UserInDB
+from app.schemas.user import UserCreate, UserUpdate, UserInDB, UserSearch
 from app.services.user import user_svc
 from app.protocols.db.models.user import User
-from app.api.middleware.bearer import get_current_active_superempleado, get_current_empleado
+from app.api.middleware.bearer import (
+    get_current_active_superempleado,
+    get_current_empleado,
+)
 
 
 router = APIRouter()
@@ -31,15 +34,18 @@ def get_all_user(
     *,
     skip: int = 0,
     limit: int = 10,
-    user: User = Depends(get_current_active_superempleado)
+    user: User = Depends(get_current_active_superempleado),
+    payload: UserSearch = Depends(UserSearch)
 ) -> list[UserInDB]:
-    return user_svc.get_multi(skip=skip, limit=limit)
+    return user_svc.get_multi(
+        skip=skip,
+        limit=limit,
+        payload=payload.dict(exclude_none=True, exclude_unset=True),
+    )
 
 
 @router.get("/{id}", response_model=UserInDB, status_code=200)
-def get_user(
-    *, id: int, user: User = Depends(get_current_empleado)
-) -> UserInDB:
+def get_user(*, id: int, user: User = Depends(get_current_empleado)) -> UserInDB:
     if id == 0:
         return user
     user = user_svc.get(id=id)

@@ -1,5 +1,8 @@
 from datetime import date
 from typing import Any
+
+from sqlalchemy import desc
+
 from app.infraestructure.db.crud.base import CRUDBase
 from app.infraestructure.db.models import Sale
 from app.infraestructure.db.utils.session import SessionLocal
@@ -23,7 +26,13 @@ class SaleCrud(CRUDBase[Sale, SaleCreate, SaleUpdate]):
         values: tuple[str] | None = None
     ) -> list[SaleMultiResponse]:
         with SessionLocal() as db:
-            sales = db.query(Sale).offset(skip).limit(limit).all()
+            sales = (
+                db.query(Sale)
+                .order_by(desc(Sale.created_at))
+                .offset(skip)
+                .limit(limit)
+                .all()
+            )
             sales_response = []
             for sale in sales:
                 sales_response.append(SaleMultiResponse.from_orm(sale))

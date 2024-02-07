@@ -39,6 +39,8 @@ class UserInDB(GeneralResponse, UserBase):
 class UserSearch(BaseModel):
     names__icontains: str | None = Field(None, alias="names")
     email__icontains: str | None = Field(None, alias="email")
+    identification__icontains: str | None = Field(None, alias="identification")
+    active: bool | None = Field(None, alias="active")
 
     class Config:
         allow_population_by_field_name = True

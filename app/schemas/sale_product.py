@@ -11,6 +11,7 @@ class SaleProductBase(BaseModel):
     product_id: int
     total: int
     tax: int
+    discount: int = 0
 
 
 class SaleProductCreate(SaleProductBase):

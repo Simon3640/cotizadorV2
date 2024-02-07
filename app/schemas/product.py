@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, Field
 
 from app.schemas.model import GeneralResponse
 
@@ -25,3 +25,11 @@ class ProductUpdate(BaseModel):
 
 class ProductInDB(GeneralResponse, ProductBase):
     ...
+
+
+class ProductSearch(BaseModel):
+    reference__icontains: str | None = Field(None, alias="reference")
+    name__icontains: str | None = Field(None, alias="name")
+
+    class Config:
+        allow_population_by_field_name = True

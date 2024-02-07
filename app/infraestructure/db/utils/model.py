@@ -15,7 +15,7 @@ class BaseModel:
         return cls._camel2snake(cls.__name__)
 
     created_at = Column(DateTime(timezone=True), default=func.now())
-    updated_at = Column(DateTime(timezone=True), default=func.now())
+    updated_at = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
 
     def _camel2snake(name: str):
         return name[0].lower() + "".join(

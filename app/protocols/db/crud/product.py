@@ -4,4 +4,5 @@ from app.schemas.product import ProductCreate, ProductUpdate
 
 
 class CRUDProductProtocol(CRUDProtocol[Product, ProductCreate, ProductUpdate]):
-    ...
+    def create_or_update(self, *, product: ProductCreate) -> None:
+        ...

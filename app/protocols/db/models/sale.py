@@ -16,6 +16,8 @@ class Sale(BaseModel):
     user_id: int
     buyer_id: int
     status: SaleStatus
+    consecutive: int
+    document: str
 
     buyer: Buyer
     user: User

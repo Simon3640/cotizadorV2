@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 
-from app.schemas.buyer import BuyerCreate, BuyerUpdate, BuyerInDB
+from app.schemas.buyer import BuyerCreate, BuyerUpdate, BuyerInDB, BuyerSearch
 from app.services.buyer import buyer_svc
 from app.protocols.db.models.user import User
 from app.api.middleware.bearer import get_current_active_empleado
@@ -28,9 +28,15 @@ def create_buyer(
 
 @router.get("", response_model=list[BuyerInDB], status_code=200)
 def get_all_buyer(
-    *, skip: int = 0, limit: int = 10, user: User = Depends(get_current_active_empleado)
+    *,
+    skip: int = 0,
+    limit: int = 10,
+    user: User = Depends(get_current_active_empleado),
+    payload: BuyerSearch = Depends(BuyerSearch)
 ) -> list[BuyerInDB]:
-    return buyer_svc.get_multi(skip=skip, limit=limit)
+    return buyer_svc.get_multi(
+        skip=skip, limit=limit, payload=payload.dict(exclude_none=True)
+    )
 
 
 @router.get("/{id}", response_model=BuyerInDB, status_code=200)

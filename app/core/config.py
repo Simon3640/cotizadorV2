@@ -31,6 +31,15 @@ class Settings(BaseSettings):
     SUPER_USER_EMAIL: str = "admin@example.com"
     SUPER_USER_PASSWORD: str = "12345678"
 
+    AWS_ACCESS_KEY_ID: str
+    AWS_ACCESS_SECRET_KEY: str
+    AWS_REGION_NAME: str
+    AWS_BUCKET_NAME: str
+
+    AMQP_DSN: str
+    SCHEDULE_TIME: int = 20
+    ENVIRONMENT: str 
+
 
 
 

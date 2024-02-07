@@ -2,6 +2,7 @@ from typing import Generic, TypeVar, Any
 from datetime import date
 
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import func, or_, desc
 
 from app.core.exceptions import ORMError
 from app.infraestructure.db.utils.model import BaseModel as Model
@@ -44,7 +45,27 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     ) -> list[ModelType | dict[str, Any]]:
         with SessionLocal() as db:
             try:
-                return db.query(self.model).offset(skip).limit(limit).all()
+                query = db.query(self.model)
+                if payload:
+                    columns_search = []
+                    for key, value in payload.items():
+                        if key.endswith("__icontains") and value:
+                            column_name = key[: -len("__icontains")]
+                            columns_search.append(
+                                func.lower(getattr(self.model, column_name)).contains(
+                                    value.lower()
+                                )
+                            )
+                        else:
+                            query = query.filter(getattr(self.model, key) == value)
+                    if columns_search:
+                        query = query.filter(or_(*columns_search))
+                if order_by:
+                    if order_by.endswith("-"):
+                        query = query.order_by(desc(getattr(self.model, order_by[:-1])))
+                    else:
+                        query = query.order_by(getattr(self.model, order_by))
+                return query.offset(skip).limit(limit).all()
             except IntegrityError as e:
                 raise ORMError(str(e))
 

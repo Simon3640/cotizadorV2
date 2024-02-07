@@ -6,3 +6,4 @@ class SaleProduct(BaseModel):
     product_id: int
     tax: int
     total: int
+    discount: int

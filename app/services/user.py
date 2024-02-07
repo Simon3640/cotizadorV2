@@ -3,7 +3,7 @@ from app.services.crypt import crypt_svc
 from app.schemas.user import UserUpdate, UserCreate, UserCreateInDB, UserInDB
 from app.protocols.db.models.user import User
 from app.protocols.db.crud.user import CRUDUserProtocol
-from app.core.exceptions import InvalidCredentials
+
 
 
 class UserService(ServiceBase[User, UserCreateInDB, UserUpdate, CRUDUserProtocol]):
