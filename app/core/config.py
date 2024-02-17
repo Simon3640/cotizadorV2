@@ -39,7 +39,8 @@ class Settings(BaseSettings):
     AMQP_DSN: str
     SCHEDULE_TIME: int = 20
     ENVIRONMENT: str 
-
+    SMTP_USER: str
+    SMTP_PASSWORD: str
 
 
 

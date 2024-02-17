@@ -1,4 +1,4 @@
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, Body
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.services.user import user_svc
@@ -28,3 +28,11 @@ def login_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
         expires=settings.ACCESS_TOKEN_EXPIRE_MINUTES / 24 / 60,
     )
     return response
+
+
+@router.post("/recover-password", response_model=None)
+def recover_password(*, email: str = Body(...)) -> None:
+    user_svc.recover_password(email=email)
+    return None
+
+

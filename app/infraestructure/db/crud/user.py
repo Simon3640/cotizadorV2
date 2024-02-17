@@ -14,6 +14,18 @@ class UserCrud(CRUDBase[User, UserCreateInDB, UserUpdate]):
                 return db.query(User).filter(User.email == email).first()
             except NoResultFound as e:
                 raise ORMError(str(e))
+            
+    def change_password(self, *, id: int, hashed_password: str) -> User:
+        with SessionLocal() as db:
+            try:
+                user = self.get(id=id)
+                user.hashed_password = hashed_password
+                db.add(user)
+                db.commit()
+                db.refresh(user)
+                return user
+            except NoResultFound as e:
+                raise ORMError(str(e))
 
 
 user_crud = UserCrud(User)

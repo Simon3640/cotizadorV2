@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Body
 
 from app.schemas.user import UserCreate, UserUpdate, UserInDB, UserSearch
 from app.services.user import user_svc
@@ -60,6 +60,19 @@ def update_user(*, obj_in: UserUpdate, id: int) -> None:
     if not user:
         raise HTTPException(404, "User not found")
     user_svc.update(id=id, obj_in=obj_in)
+    return None
+
+
+@router.patch("/new-password/{id}", response_model=None)
+def update_password(
+    *, password: str, id: int, user: User = Depends(get_current_empleado)
+) -> None:
+    if user.id != id or not user.is_superuser:
+        raise HTTPException(403, "You are not allowed to update this user")
+    current_user = user_svc.get(id=id)
+    if not current_user:
+        raise HTTPException(404, "User not found")
+    user_svc.update_password(id=id, password=password)
     return None
 
 
